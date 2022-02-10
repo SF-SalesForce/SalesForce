@@ -121,6 +121,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -167,6 +168,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\WorkOrders\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\User\" />
     <Folder Include="Views\WorkOrders\" />
   </ItemGroup>
   <ItemGroup>
@@ -186,6 +188,10 @@
     <ProjectReference Include="..\BusinessLayer\BusinessLayer.csproj">
       <Project>{fb465d04-7246-4ae7-958e-d453535fe201}</Project>
       <Name>BusinessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">
+      <Project>{7573C796-EDB3-407D-AACF-6C0F315A79AB}</Project>
+      <Name>DataAccessLayer</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
