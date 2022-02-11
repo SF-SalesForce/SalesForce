@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "RegisterUser";
+}
+
+<h2>RegisterUser</h2>
+
+
+<script>
+
+
+
+    var CreateNewUser = function () {
+
+        var username = $.trim($("#UserEmail").val())
+        var userpassword = $.trim($("#UserPassword").val())
+        var usertype = $.trim($("#UserType").val());
+
+
+        var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        if (!expr.test(username)) {
+            lblError.innerHTML = "Invalid email address.";
+            alert(lblError.innerHTML);
+            return;
+        }
+        else {
+            lblError.innerHTML = "";
+        }
+
+
+        $.ajax({
+            type: "Post",
+            url: "/User/CreateNewUser",
+            data: { username: username, userpassword: userpassword, usertype: usertype },
+            success: function (response) {
+                alert(response);
+            }
+
+        })
+
+    }
+
+
+
+</script>

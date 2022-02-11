@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="IBase.cs" />
     <Compile Include="BaseManager.cs" />
+    <Compile Include="Models\ModelUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserManagement.cs" />
   </ItemGroup>
@@ -60,10 +61,6 @@
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">
       <Project>{7573C796-EDB3-407D-AACF-6C0F315A79AB}</Project>
       <Name>DataAccessLayer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EntityLayer\EntityLayer.csproj">
-      <Project>{55accb56-536d-4d25-9d9d-a8882f3f1331}</Project>
-      <Name>EntityLayer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -47,6 +47,7 @@
           <Property Name="UserPassword" Type="varchar" MaxLength="100" />
           <Property Name="UserType" Type="varchar" MaxLength="100" />
           <Property Name="ParentID" Type="int" />
+          <Property Name="UserImagePath" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="Tbl_WorkOrders">
           <Key>
@@ -111,6 +112,7 @@
           <Property Name="UserPassword" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="UserType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ParentID" Type="Int32" />
+          <Property Name="UserImagePath" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Tbl_WorkOrders">
           <Key>
@@ -175,6 +177,7 @@
           <EntitySetMapping Name="Tbl_Users">
             <EntityTypeMapping TypeName="SalesForceModel.Tbl_Users">
               <MappingFragment StoreEntitySet="Tbl_Users">
+                <ScalarProperty Name="UserImagePath" ColumnName="UserImagePath" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
                 <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />

@@ -9,12 +9,40 @@ namespace SalesForce.Controllers
 {
     public class UserController : Controller
     {
-        UserManagement um = new UserManagement();
+
         // GET: User
-        public ActionResult Index(string username,string password)
+
+        public ActionResult UserLogin()
         {
-            var result = um.checkUser(username, password);
-            return View(result);
+            //var result = um.checkUser(username, password);
+            return View();
         }
+
+
+        [HttpPost]
+        public JsonResult CheckUserNamePassword(string UserName, string UserPassword)
+        {
+            UserManagement um = new UserManagement();
+            var result = um.checkUser(UserName, UserPassword);
+
+            Session["UserType"] = result.UserType;
+            Session["UserID"] = result.ID;
+            Session["UserName"] = result.UserEmail;
+            Session["UserImagePath"] = result.UserImagePath;
+
+
+            return Json(result);
+        }
+
+
+        public ActionResult UserLogout()
+        {
+            Session.Clear();
+            Session.Abandon();
+            return RedirectToAction("UserLogin");
+
+        }
+
+
     }
 }

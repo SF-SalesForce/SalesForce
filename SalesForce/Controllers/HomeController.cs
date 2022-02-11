@@ -13,13 +13,16 @@ namespace SalesForce.Controllers
 
         public ActionResult Index()
         {
-          
+            var result = "";
             return View(result);
         }
 
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
+
+            UserManagement cs = new UserManagement();
+            cs.checkUser("test", "testc");
 
             return View();
         }

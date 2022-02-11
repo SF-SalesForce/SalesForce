@@ -1,0 +1,58 @@
+﻿<br />
+<br />
+<br />
+
+<form>
+
+    <label>UserName</label>
+    <input type="email" id="UserName" class="form-control" placeholder="UserName" />
+
+    <label>UserPassword</label>
+    <input type="password" id="UserPassword" class="form-control" placeholder="UserPassword" />
+   
+
+</form>
+<div>
+    <a href="#" class="btn btn-primary " onclick="CheckUser()">CheckUser</a>
+
+    @*<a href="RegisterUser" class="- " onclick="CheckUser()">CheckUser</a>*@
+
+
+</div>
+
+<script>
+
+    var CheckUser = function () {
+
+        var username = $.trim($("#UserName").val())
+        var userpassword = $.trim($("#UserPassword").val())
+
+        $.ajax({
+            type: "Post",
+            url: "/User/CheckUserNamePassword",
+            data: { UserName: username, UserPassword: userpassword },
+            success: function (response) {
+                //  alert(response);
+
+                if (response == "fail") {
+
+                    window.location.href = "/Home/Login";
+                }
+                else {
+
+                    window.location.href = "/Home";
+                }
+
+
+            }
+
+        })
+
+
+    }
+
+     
+
+
+
+</script>

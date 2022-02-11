@@ -19,5 +19,6 @@ namespace DataAccessLayer
         public string UserPassword { get; set; }
         public string UserType { get; set; }
         public Nullable<int> ParentID { get; set; }
+        public string UserImagePath { get; set; }
     }
 }
