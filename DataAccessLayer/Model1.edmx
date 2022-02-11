@@ -29,6 +29,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OrderDate" Type="date" />
           <Property Name="CustomerID" Type="int" />
+          <Property Name="OrderNumber" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Tbl_Products">
           <Key>
@@ -58,6 +59,18 @@
           <Property Name="Status" Type="varchar" MaxLength="100" />
           <Property Name="UserID" Type="int" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SalesForce.dbo.vw_orders' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vw_orders">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="orderID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="orderID" Type="int" Nullable="false" />
+          <Property Name="OrderNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserEmail" Type="varchar" MaxLength="100" />
+        </EntityType>
         <EntityContainer Name="SalesForceModelStoreContainer">
           <EntitySet Name="Tbl_Customers" EntityType="Self.Tbl_Customers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tbl_OrderDetails" EntityType="Self.Tbl_OrderDetails" Schema="dbo" store:Type="Tables" />
@@ -65,6 +78,14 @@
           <EntitySet Name="Tbl_Products" EntityType="Self.Tbl_Products" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tbl_Users" EntityType="Self.Tbl_Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tbl_WorkOrders" EntityType="Self.Tbl_WorkOrders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vw_orders" EntityType="Self.vw_orders" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vw_orders].[ID] AS [ID], 
+    [vw_orders].[orderID] AS [orderID], 
+    [vw_orders].[OrderNumber] AS [OrderNumber], 
+    [vw_orders].[UserEmail] AS [UserEmail]
+    FROM [dbo].[vw_orders] AS [vw_orders]</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -94,6 +115,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OrderDate" Type="DateTime" Precision="0" />
           <Property Name="CustomerID" Type="Int32" />
+          <Property Name="OrderNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Tbl_Products">
           <Key>
@@ -130,7 +152,18 @@
           <EntitySet Name="Tbl_Products" EntityType="Self.Tbl_Products" />
           <EntitySet Name="Tbl_Users" EntityType="Self.Tbl_Users" />
           <EntitySet Name="Tbl_WorkOrders" EntityType="Self.Tbl_WorkOrders" />
+          <EntitySet Name="vw_orders" EntityType="SalesForceModel.vw_orders" />
         </EntityContainer>
+        <EntityType Name="vw_orders">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="orderID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="orderID" Type="Int32" Nullable="false" />
+          <Property Name="OrderNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -159,6 +192,7 @@
           <EntitySetMapping Name="Tbl_Orders">
             <EntityTypeMapping TypeName="SalesForceModel.Tbl_Orders">
               <MappingFragment StoreEntitySet="Tbl_Orders">
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
@@ -193,6 +227,16 @@
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_orders">
+            <EntityTypeMapping TypeName="SalesForceModel.vw_orders">
+              <MappingFragment StoreEntitySet="vw_orders">
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="orderID" ColumnName="orderID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

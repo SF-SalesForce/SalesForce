@@ -31,5 +31,6 @@ namespace DataAccessLayer
         public virtual DbSet<Tbl_Products> Tbl_Products { get; set; }
         public virtual DbSet<Tbl_Users> Tbl_Users { get; set; }
         public virtual DbSet<Tbl_WorkOrders> Tbl_WorkOrders { get; set; }
+        public virtual DbSet<vw_orders> vw_orders { get; set; }
     }
 }

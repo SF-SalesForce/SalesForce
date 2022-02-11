@@ -12,11 +12,11 @@ namespace DataAccessLayer
     using System;
     using System.Collections.Generic;
     
-    public partial class Tbl_Orders
+    public partial class vw_orders
     {
         public int ID { get; set; }
-        public Nullable<System.DateTime> OrderDate { get; set; }
-        public Nullable<int> CustomerID { get; set; }
+        public int orderID { get; set; }
         public string OrderNumber { get; set; }
+        public string UserEmail { get; set; }
     }
 }
