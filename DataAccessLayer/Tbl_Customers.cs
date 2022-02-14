@@ -16,6 +16,6 @@ namespace DataAccessLayer
     {
         public int ID { get; set; }
         public string CustomerName { get; set; }
-        public string Adress { get; set; }
+        public string Address { get; set; }
     }
 }

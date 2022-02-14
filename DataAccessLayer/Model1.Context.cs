@@ -28,9 +28,9 @@ namespace DataAccessLayer
         public virtual DbSet<Tbl_Customers> Tbl_Customers { get; set; }
         public virtual DbSet<Tbl_Oppurtunity> Tbl_Oppurtunity { get; set; }
         public virtual DbSet<Tbl_OrderDetails> Tbl_OrderDetails { get; set; }
-        public virtual DbSet<Tbl_Orders> Tbl_Orders { get; set; }
         public virtual DbSet<Tbl_Products> Tbl_Products { get; set; }
         public virtual DbSet<Tbl_WorkOrders> Tbl_WorkOrders { get; set; }
         public virtual DbSet<Tbl_Users> Tbl_Users { get; set; }
+        public virtual DbSet<Tbl_Orders> Tbl_Orders { get; set; }
     }
 }
