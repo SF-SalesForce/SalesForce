@@ -4,14 +4,29 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="SalesForceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="SalesForceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Tbl_Customers">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CustomerName" Type="varchar" MaxLength="100" />
-          <Property Name="Address" Type="varchar" MaxLength="500" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Adress" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="Tbl_Oppurtunity">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OppurtunityType" Type="nvarchar" MaxLength="50" />
+          <Property Name="OppurtunityHeader" Type="nvarchar" MaxLength="50" />
+          <Property Name="OppurtunityDetail" Type="nvarchar" MaxLength="50" />
+          <Property Name="OppurtunityCustomerName" Type="nvarchar" MaxLength="100" />
+          <Property Name="OppurtunityCustomerAdress" Type="nvarchar" MaxLength="100" />
+          <Property Name="OppurtunityExpireDate" Type="datetime" />
+          <Property Name="OppurtunityEntery" Type="nvarchar" MaxLength="100" />
+          <Property Name="OppurtunityDescription" Type="nvarchar" MaxLength="100" />
+          <Property Name="OppurtunityStartDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Tbl_OrderDetails">
           <Key>
@@ -21,6 +36,7 @@
           <Property Name="OrderID" Type="int" />
           <Property Name="ProductID" Type="int" />
           <Property Name="Quantity" Type="int" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="Tbl_Orders">
           <Key>
@@ -29,16 +45,19 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OrderDate" Type="date" />
           <Property Name="CustomerID" Type="int" />
-          <Property Name="OrderNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="Adress" Type="nvarchar" MaxLength="50" />
+          <Property Name="OrderNumber" Type="int" />
         </EntityType>
         <EntityType Name="Tbl_Products">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ProductName" Type="varchar" MaxLength="100" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="100" />
           <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SalesForce.dbo.Tbl_Users' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Tbl_Users">
           <Key>
             <PropertyRef Name="ID" />
@@ -48,7 +67,7 @@
           <Property Name="UserPassword" Type="varchar" MaxLength="100" />
           <Property Name="UserType" Type="varchar" MaxLength="100" />
           <Property Name="ParentID" Type="int" />
-          <Property Name="UserImagePath" Type="varchar" MaxLength="500" />
+          <Property Name="UserImagePath" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Tbl_WorkOrders">
           <Key>
@@ -56,38 +75,29 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OrderID" Type="int" />
-          <Property Name="Status" Type="varchar" MaxLength="100" />
+          <Property Name="Status" Type="nchar" MaxLength="10" />
           <Property Name="UserID" Type="int" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SalesForce.dbo.vw_orders' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vw_orders">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="orderID" />
-          </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="orderID" Type="int" Nullable="false" />
-          <Property Name="OrderNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="UserEmail" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityContainer Name="SalesForceModelStoreContainer">
           <EntitySet Name="Tbl_Customers" EntityType="Self.Tbl_Customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Oppurtunity" EntityType="Self.Tbl_Oppurtunity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tbl_OrderDetails" EntityType="Self.Tbl_OrderDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tbl_Orders" EntityType="Self.Tbl_Orders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tbl_Products" EntityType="Self.Tbl_Products" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Tbl_Users" EntityType="Self.Tbl_Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tbl_WorkOrders" EntityType="Self.Tbl_WorkOrders" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="vw_orders" EntityType="Self.vw_orders" store:Type="Views" store:Schema="dbo">
+          <EntitySet Name="Tbl_Users" EntityType="Self.Tbl_Users" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [vw_orders].[ID] AS [ID], 
-    [vw_orders].[orderID] AS [orderID], 
-    [vw_orders].[OrderNumber] AS [OrderNumber], 
-    [vw_orders].[UserEmail] AS [UserEmail]
-    FROM [dbo].[vw_orders] AS [vw_orders]</DefiningQuery>
+    [Tbl_Users].[ID] AS [ID], 
+    [Tbl_Users].[UserEmail] AS [UserEmail], 
+    [Tbl_Users].[UserPassword] AS [UserPassword], 
+    [Tbl_Users].[UserType] AS [UserType], 
+    [Tbl_Users].[ParentID] AS [ParentID], 
+    [Tbl_Users].[UserImagePath] AS [UserImagePath]
+    FROM [dbo].[Tbl_Users] AS [Tbl_Users]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SalesForceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -96,8 +106,23 @@ warning 6002: The table/view 'SalesForce.dbo.vw_orders' does not have a primary 
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CustomerName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Adress" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Tbl_Oppurtunity">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OppurtunityType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OppurtunityHeader" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OppurtunityDetail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OppurtunityCustomerName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="OppurtunityCustomerAdress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="OppurtunityExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="OppurtunityEntery" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="OppurtunityDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="OppurtunityStartDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Tbl_OrderDetails">
           <Key>
@@ -107,6 +132,7 @@ warning 6002: The table/view 'SalesForce.dbo.vw_orders' does not have a primary 
           <Property Name="OrderID" Type="Int32" />
           <Property Name="ProductID" Type="Int32" />
           <Property Name="Quantity" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="Tbl_Orders">
           <Key>
@@ -115,15 +141,25 @@ warning 6002: The table/view 'SalesForce.dbo.vw_orders' does not have a primary 
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OrderDate" Type="DateTime" Precision="0" />
           <Property Name="CustomerID" Type="Int32" />
-          <Property Name="OrderNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Adress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OrderNumber" Type="Int32" />
         </EntityType>
         <EntityType Name="Tbl_Products">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProductName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ProductName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="Tbl_WorkOrders">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderID" Type="Int32" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="UserID" Type="Int32" />
         </EntityType>
         <EntityType Name="Tbl_Users">
           <Key>
@@ -134,36 +170,17 @@ warning 6002: The table/view 'SalesForce.dbo.vw_orders' does not have a primary 
           <Property Name="UserPassword" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="UserType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ParentID" Type="Int32" />
-          <Property Name="UserImagePath" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="Tbl_WorkOrders">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OrderID" Type="Int32" />
-          <Property Name="Status" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="UserID" Type="Int32" />
+          <Property Name="UserImagePath" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityContainer Name="SalesForceEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Tbl_Customers" EntityType="Self.Tbl_Customers" />
+          <EntitySet Name="Tbl_Oppurtunity" EntityType="Self.Tbl_Oppurtunity" />
           <EntitySet Name="Tbl_OrderDetails" EntityType="Self.Tbl_OrderDetails" />
           <EntitySet Name="Tbl_Orders" EntityType="Self.Tbl_Orders" />
           <EntitySet Name="Tbl_Products" EntityType="Self.Tbl_Products" />
-          <EntitySet Name="Tbl_Users" EntityType="Self.Tbl_Users" />
           <EntitySet Name="Tbl_WorkOrders" EntityType="Self.Tbl_WorkOrders" />
-          <EntitySet Name="vw_orders" EntityType="SalesForceModel.vw_orders" />
+          <EntitySet Name="Tbl_Users" EntityType="Self.Tbl_Users" />
         </EntityContainer>
-        <EntityType Name="vw_orders">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="orderID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="orderID" Type="Int32" Nullable="false" />
-          <Property Name="OrderNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="UserEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -175,7 +192,23 @@ warning 6002: The table/view 'SalesForce.dbo.vw_orders' does not have a primary 
               <MappingFragment StoreEntitySet="Tbl_Customers">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Adress" ColumnName="Adress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Oppurtunity">
+            <EntityTypeMapping TypeName="SalesForceModel.Tbl_Oppurtunity">
+              <MappingFragment StoreEntitySet="Tbl_Oppurtunity">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="OppurtunityType" ColumnName="OppurtunityType" />
+                <ScalarProperty Name="OppurtunityHeader" ColumnName="OppurtunityHeader" />
+                <ScalarProperty Name="OppurtunityDetail" ColumnName="OppurtunityDetail" />
+                <ScalarProperty Name="OppurtunityCustomerName" ColumnName="OppurtunityCustomerName" />
+                <ScalarProperty Name="OppurtunityCustomerAdress" ColumnName="OppurtunityCustomerAdress" />
+                <ScalarProperty Name="OppurtunityExpireDate" ColumnName="OppurtunityExpireDate" />
+                <ScalarProperty Name="OppurtunityEntery" ColumnName="OppurtunityEntery" />
+                <ScalarProperty Name="OppurtunityDescription" ColumnName="OppurtunityDescription" />
+                <ScalarProperty Name="OppurtunityStartDate" ColumnName="OppurtunityStartDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -186,16 +219,18 @@ warning 6002: The table/view 'SalesForce.dbo.vw_orders' does not have a primary 
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Tbl_Orders">
             <EntityTypeMapping TypeName="SalesForceModel.Tbl_Orders">
               <MappingFragment StoreEntitySet="Tbl_Orders">
-                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="Adress" ColumnName="Adress" />
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -205,18 +240,6 @@ warning 6002: The table/view 'SalesForce.dbo.vw_orders' does not have a primary 
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ProductName" ColumnName="ProductName" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Tbl_Users">
-            <EntityTypeMapping TypeName="SalesForceModel.Tbl_Users">
-              <MappingFragment StoreEntitySet="Tbl_Users">
-                <ScalarProperty Name="UserImagePath" ColumnName="UserImagePath" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
-                <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
-                <ScalarProperty Name="UserType" ColumnName="UserType" />
-                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -230,13 +253,15 @@ warning 6002: The table/view 'SalesForce.dbo.vw_orders' does not have a primary 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="vw_orders">
-            <EntityTypeMapping TypeName="SalesForceModel.vw_orders">
-              <MappingFragment StoreEntitySet="vw_orders">
-                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
-                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
-                <ScalarProperty Name="orderID" ColumnName="orderID" />
+          <EntitySetMapping Name="Tbl_Users">
+            <EntityTypeMapping TypeName="SalesForceModel.Tbl_Users">
+              <MappingFragment StoreEntitySet="Tbl_Users">
                 <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+                <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="UserImagePath" ColumnName="UserImagePath" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
  
 using DataAccessLayer;
+using DataAccessLayer.Models;
 
 namespace BusinessLayer
 {

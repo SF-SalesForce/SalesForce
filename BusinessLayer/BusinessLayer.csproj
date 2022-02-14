@@ -51,12 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IBase.cs" />
-    <Compile Include="BaseManager.cs" />
-    <Compile Include="Models\ModelUser.cs" />
-    <Compile Include="Models\ModelWorkOrders.cs" />
+    <Compile Include="Oppurtunities\OppurtunityManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserManagement.cs" />
+    <Compile Include="User\UserManagement.cs" />
     <Compile Include="WorkOrders\WorkOrderManagement.cs" />
   </ItemGroup>
   <ItemGroup>

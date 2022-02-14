@@ -141,6 +141,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\WorkOrders\OppurtunityController.cs" />
     <Compile Include="Controllers\WorkOrders\WorkOrderController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -2621,6 +2622,7 @@
     <Content Include="Views\User\UserLogin.cshtml" />
     <Content Include="Views\Login\RegisterUser.cshtml" />
     <Content Include="Views\WorkOrder\Index.cshtml" />
+    <Content Include="Views\Oppurtunity\OppurtunityIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

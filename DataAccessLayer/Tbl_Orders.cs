@@ -17,6 +17,7 @@ namespace DataAccessLayer
         public int ID { get; set; }
         public Nullable<System.DateTime> OrderDate { get; set; }
         public Nullable<int> CustomerID { get; set; }
-        public string OrderNumber { get; set; }
+        public string Adress { get; set; }
+        public Nullable<int> OrderNumber { get; set; }
     }
 }
