@@ -1,6 +1,4 @@
-﻿
-using DataAccessLayer;
-using DataAccessLayer.Abstract;
+﻿using DataAccessLayer.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Concrete
 {
-   public class OppurtunityDal:GenericDal<Tbl_Oppurtunity>,IOppurtunityDal
+   public class UserDal :GenericDal<Tbl_Users>,IUserDal
     {
+
     }
 }

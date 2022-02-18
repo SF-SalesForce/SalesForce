@@ -1,4 +1,5 @@
 ﻿using BusinessLayer;
+using DataAccessLayer.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace SalesForce.Controllers
         [HttpPost]
         public JsonResult CheckUserNamePassword(string UserName, string UserPassword)
         {
-            UserManagement um = new UserManagement();
+            UserManager um = new UserManager(new UserDal());
             var result = um.checkUser(UserName, UserPassword);
 
             Session["UserType"] = result.UserType;

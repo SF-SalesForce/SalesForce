@@ -12,13 +12,10 @@ namespace DataAccessLayer
     using System;
     using System.Collections.Generic;
     
-    public partial class Tbl_WorkOrders
+    public partial class Tbl_OrderAssigment
     {
         public int ID { get; set; }
-        public Nullable<int> OrderID { get; set; }
-        public string Status { get; set; }
         public Nullable<int> UserID { get; set; }
-    
-        public virtual Tbl_Orders Tbl_Orders { get; set; }
+        public Nullable<int> OrderID { get; set; }
     }
 }

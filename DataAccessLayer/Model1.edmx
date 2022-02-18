@@ -5,6 +5,16 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="SalesForceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="Tbl_Customers">
           <Key>
             <PropertyRef Name="ID" />
@@ -28,6 +38,14 @@
           <Property Name="OppurtunityDescription" Type="nvarchar" MaxLength="100" />
           <Property Name="OppurtunityStartDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="Tbl_OrderAssigment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="OrderID" Type="int" />
+        </EntityType>
         <EntityType Name="Tbl_OrderDetails">
           <Key>
             <PropertyRef Name="ID" />
@@ -36,7 +54,7 @@
           <Property Name="OrderID" Type="int" />
           <Property Name="ProductID" Type="int" />
           <Property Name="Quantity" Type="int" />
-          <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TotalPrice" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="Tbl_Orders">
           <Key>
@@ -45,8 +63,9 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OrderDate" Type="date" />
           <Property Name="CustomerID" Type="int" />
-          <Property Name="Adress" Type="nvarchar" MaxLength="50" />
-          <Property Name="OrderNumber" Type="int" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="OrderDelivery" Type="bit" />
+          <Property Name="OrderStatus" Type="bit" />
         </EntityType>
         <EntityType Name="Tbl_Products">
           <Key>
@@ -56,8 +75,6 @@
           <Property Name="ProductName" Type="nvarchar" MaxLength="100" />
           <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SalesForce.dbo.Tbl_Users' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Tbl_Users">
           <Key>
             <PropertyRef Name="ID" />
@@ -78,29 +95,112 @@ warning 6002: The table/view 'SalesForce.dbo.Tbl_Users' does not have a primary 
           <Property Name="Status" Type="nchar" MaxLength="10" />
           <Property Name="UserID" Type="int" />
         </EntityType>
+        <Association Name="FK_Tbl_OrderDetails_Tbl_Orders">
+          <End Role="Tbl_Orders" Type="Self.Tbl_Orders" Multiplicity="0..1" />
+          <End Role="Tbl_OrderDetails" Type="Self.Tbl_OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Orders">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_OrderDetails">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_OrderDetails_Tbl_Products">
+          <End Role="Tbl_Products" Type="Self.Tbl_Products" Multiplicity="0..1" />
+          <End Role="Tbl_OrderDetails" Type="Self.Tbl_OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Products">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_OrderDetails">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Orders_Tbl_Customers">
+          <End Role="Tbl_Customers" Type="Self.Tbl_Customers" Multiplicity="0..1" />
+          <End Role="Tbl_Orders" Type="Self.Tbl_Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Customers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_Orders">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Orders_Tbl_Users">
+          <End Role="Tbl_Users" Type="Self.Tbl_Users" Multiplicity="0..1" />
+          <End Role="Tbl_Orders" Type="Self.Tbl_Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_Orders">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_WorkOrders_Tbl_Orders">
+          <End Role="Tbl_Orders" Type="Self.Tbl_Orders" Multiplicity="0..1" />
+          <End Role="Tbl_WorkOrders" Type="Self.Tbl_WorkOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Orders">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_WorkOrders">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="SalesForceModelStoreContainer">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tbl_Customers" EntityType="Self.Tbl_Customers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tbl_Oppurtunity" EntityType="Self.Tbl_Oppurtunity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_OrderAssigment" EntityType="Self.Tbl_OrderAssigment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tbl_OrderDetails" EntityType="Self.Tbl_OrderDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tbl_Orders" EntityType="Self.Tbl_Orders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tbl_Products" EntityType="Self.Tbl_Products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Users" EntityType="Self.Tbl_Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tbl_WorkOrders" EntityType="Self.Tbl_WorkOrders" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Tbl_Users" EntityType="Self.Tbl_Users" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Tbl_Users].[ID] AS [ID], 
-    [Tbl_Users].[UserEmail] AS [UserEmail], 
-    [Tbl_Users].[UserPassword] AS [UserPassword], 
-    [Tbl_Users].[UserType] AS [UserType], 
-    [Tbl_Users].[ParentID] AS [ParentID], 
-    [Tbl_Users].[UserImagePath] AS [UserImagePath]
-    FROM [dbo].[Tbl_Users] AS [Tbl_Users]</DefiningQuery>
-          </EntitySet>
+          <AssociationSet Name="FK_Tbl_OrderDetails_Tbl_Orders" Association="Self.FK_Tbl_OrderDetails_Tbl_Orders">
+            <End Role="Tbl_Orders" EntitySet="Tbl_Orders" />
+            <End Role="Tbl_OrderDetails" EntitySet="Tbl_OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_OrderDetails_Tbl_Products" Association="Self.FK_Tbl_OrderDetails_Tbl_Products">
+            <End Role="Tbl_Products" EntitySet="Tbl_Products" />
+            <End Role="Tbl_OrderDetails" EntitySet="Tbl_OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Orders_Tbl_Customers" Association="Self.FK_Tbl_Orders_Tbl_Customers">
+            <End Role="Tbl_Customers" EntitySet="Tbl_Customers" />
+            <End Role="Tbl_Orders" EntitySet="Tbl_Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Orders_Tbl_Users" Association="Self.FK_Tbl_Orders_Tbl_Users">
+            <End Role="Tbl_Users" EntitySet="Tbl_Users" />
+            <End Role="Tbl_Orders" EntitySet="Tbl_Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_WorkOrders_Tbl_Orders" Association="Self.FK_Tbl_WorkOrders_Tbl_Orders">
+            <End Role="Tbl_Orders" EntitySet="Tbl_Orders" />
+            <End Role="Tbl_WorkOrders" EntitySet="Tbl_WorkOrders" />
+          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SalesForceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
         <EntityType Name="Tbl_Customers">
           <Key>
             <PropertyRef Name="ID" />
@@ -108,6 +208,7 @@ warning 6002: The table/view 'SalesForce.dbo.Tbl_Users' does not have a primary 
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CustomerName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Adress" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tbl_Orders" Relationship="Self.FK_Tbl_Orders_Tbl_Customers" FromRole="Tbl_Customers" ToRole="Tbl_Orders" />
         </EntityType>
         <EntityType Name="Tbl_Oppurtunity">
           <Key>
@@ -124,6 +225,14 @@ warning 6002: The table/view 'SalesForce.dbo.Tbl_Users' does not have a primary 
           <Property Name="OppurtunityDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="OppurtunityStartDate" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="Tbl_OrderAssigment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="OrderID" Type="Int32" />
+        </EntityType>
         <EntityType Name="Tbl_OrderDetails">
           <Key>
             <PropertyRef Name="ID" />
@@ -132,7 +241,9 @@ warning 6002: The table/view 'SalesForce.dbo.Tbl_Users' does not have a primary 
           <Property Name="OrderID" Type="Int32" />
           <Property Name="ProductID" Type="Int32" />
           <Property Name="Quantity" Type="Int32" />
-          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TotalPrice" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="Tbl_Orders" Relationship="Self.FK_Tbl_OrderDetails_Tbl_Orders" FromRole="Tbl_OrderDetails" ToRole="Tbl_Orders" />
+          <NavigationProperty Name="Tbl_Products" Relationship="Self.FK_Tbl_OrderDetails_Tbl_Products" FromRole="Tbl_OrderDetails" ToRole="Tbl_Products" />
         </EntityType>
         <EntityType Name="Tbl_Orders">
           <Key>
@@ -141,8 +252,13 @@ warning 6002: The table/view 'SalesForce.dbo.Tbl_Users' does not have a primary 
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OrderDate" Type="DateTime" Precision="0" />
           <Property Name="CustomerID" Type="Int32" />
-          <Property Name="Adress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="OrderNumber" Type="Int32" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="OrderDelivery" Type="Boolean" />
+          <Property Name="OrderStatus" Type="Boolean" />
+          <NavigationProperty Name="Tbl_Customers" Relationship="Self.FK_Tbl_Orders_Tbl_Customers" FromRole="Tbl_Orders" ToRole="Tbl_Customers" />
+          <NavigationProperty Name="Tbl_OrderDetails" Relationship="Self.FK_Tbl_OrderDetails_Tbl_Orders" FromRole="Tbl_Orders" ToRole="Tbl_OrderDetails" />
+          <NavigationProperty Name="Tbl_Users" Relationship="Self.FK_Tbl_Orders_Tbl_Users" FromRole="Tbl_Orders" ToRole="Tbl_Users" />
+          <NavigationProperty Name="Tbl_WorkOrders" Relationship="Self.FK_Tbl_WorkOrders_Tbl_Orders" FromRole="Tbl_Orders" ToRole="Tbl_WorkOrders" />
         </EntityType>
         <EntityType Name="Tbl_Products">
           <Key>
@@ -151,15 +267,7 @@ warning 6002: The table/view 'SalesForce.dbo.Tbl_Users' does not have a primary 
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProductName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
-        </EntityType>
-        <EntityType Name="Tbl_WorkOrders">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OrderID" Type="Int32" />
-          <Property Name="Status" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="UserID" Type="Int32" />
+          <NavigationProperty Name="Tbl_OrderDetails" Relationship="Self.FK_Tbl_OrderDetails_Tbl_Products" FromRole="Tbl_Products" ToRole="Tbl_OrderDetails" />
         </EntityType>
         <EntityType Name="Tbl_Users">
           <Key>
@@ -171,15 +279,108 @@ warning 6002: The table/view 'SalesForce.dbo.Tbl_Users' does not have a primary 
           <Property Name="UserType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ParentID" Type="Int32" />
           <Property Name="UserImagePath" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Tbl_Orders" Relationship="Self.FK_Tbl_Orders_Tbl_Users" FromRole="Tbl_Users" ToRole="Tbl_Orders" />
         </EntityType>
+        <EntityType Name="Tbl_WorkOrders">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderID" Type="Int32" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="UserID" Type="Int32" />
+          <NavigationProperty Name="Tbl_Orders" Relationship="Self.FK_Tbl_WorkOrders_Tbl_Orders" FromRole="Tbl_WorkOrders" ToRole="Tbl_Orders" />
+        </EntityType>
+        <Association Name="FK_Tbl_Orders_Tbl_Customers">
+          <End Role="Tbl_Customers" Type="Self.Tbl_Customers" Multiplicity="0..1" />
+          <End Role="Tbl_Orders" Type="Self.Tbl_Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Customers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_Orders">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_OrderDetails_Tbl_Orders">
+          <End Role="Tbl_Orders" Type="Self.Tbl_Orders" Multiplicity="0..1" />
+          <End Role="Tbl_OrderDetails" Type="Self.Tbl_OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Orders">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_OrderDetails">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_OrderDetails_Tbl_Products">
+          <End Role="Tbl_Products" Type="Self.Tbl_Products" Multiplicity="0..1" />
+          <End Role="Tbl_OrderDetails" Type="Self.Tbl_OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Products">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_OrderDetails">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Orders_Tbl_Users">
+          <End Role="Tbl_Users" Type="Self.Tbl_Users" Multiplicity="0..1" />
+          <End Role="Tbl_Orders" Type="Self.Tbl_Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_Orders">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_WorkOrders_Tbl_Orders">
+          <End Role="Tbl_Orders" Type="Self.Tbl_Orders" Multiplicity="0..1" />
+          <End Role="Tbl_WorkOrders" Type="Self.Tbl_WorkOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Orders">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_WorkOrders">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="SalesForceEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="Tbl_Customers" EntityType="Self.Tbl_Customers" />
           <EntitySet Name="Tbl_Oppurtunity" EntityType="Self.Tbl_Oppurtunity" />
+          <EntitySet Name="Tbl_OrderAssigment" EntityType="Self.Tbl_OrderAssigment" />
           <EntitySet Name="Tbl_OrderDetails" EntityType="Self.Tbl_OrderDetails" />
           <EntitySet Name="Tbl_Orders" EntityType="Self.Tbl_Orders" />
           <EntitySet Name="Tbl_Products" EntityType="Self.Tbl_Products" />
-          <EntitySet Name="Tbl_WorkOrders" EntityType="Self.Tbl_WorkOrders" />
           <EntitySet Name="Tbl_Users" EntityType="Self.Tbl_Users" />
+          <EntitySet Name="Tbl_WorkOrders" EntityType="Self.Tbl_WorkOrders" />
+          <AssociationSet Name="FK_Tbl_Orders_Tbl_Customers" Association="Self.FK_Tbl_Orders_Tbl_Customers">
+            <End Role="Tbl_Customers" EntitySet="Tbl_Customers" />
+            <End Role="Tbl_Orders" EntitySet="Tbl_Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_OrderDetails_Tbl_Orders" Association="Self.FK_Tbl_OrderDetails_Tbl_Orders">
+            <End Role="Tbl_Orders" EntitySet="Tbl_Orders" />
+            <End Role="Tbl_OrderDetails" EntitySet="Tbl_OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_OrderDetails_Tbl_Products" Association="Self.FK_Tbl_OrderDetails_Tbl_Products">
+            <End Role="Tbl_Products" EntitySet="Tbl_Products" />
+            <End Role="Tbl_OrderDetails" EntitySet="Tbl_OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Orders_Tbl_Users" Association="Self.FK_Tbl_Orders_Tbl_Users">
+            <End Role="Tbl_Users" EntitySet="Tbl_Users" />
+            <End Role="Tbl_Orders" EntitySet="Tbl_Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_WorkOrders_Tbl_Orders" Association="Self.FK_Tbl_WorkOrders_Tbl_Orders">
+            <End Role="Tbl_Orders" EntitySet="Tbl_Orders" />
+            <End Role="Tbl_WorkOrders" EntitySet="Tbl_WorkOrders" />
+          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
@@ -187,6 +388,17 @@ warning 6002: The table/view 'SalesForce.dbo.Tbl_Users' does not have a primary 
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="SalesForceModelStoreContainer" CdmEntityContainer="SalesForceEntities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="SalesForceModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Tbl_Customers">
             <EntityTypeMapping TypeName="SalesForceModel.Tbl_Customers">
               <MappingFragment StoreEntitySet="Tbl_Customers">
@@ -212,6 +424,15 @@ warning 6002: The table/view 'SalesForce.dbo.Tbl_Users' does not have a primary 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_OrderAssigment">
+            <EntityTypeMapping TypeName="SalesForceModel.Tbl_OrderAssigment">
+              <MappingFragment StoreEntitySet="Tbl_OrderAssigment">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Tbl_OrderDetails">
             <EntityTypeMapping TypeName="SalesForceModel.Tbl_OrderDetails">
               <MappingFragment StoreEntitySet="Tbl_OrderDetails">
@@ -219,7 +440,7 @@ warning 6002: The table/view 'SalesForce.dbo.Tbl_Users' does not have a primary 
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -229,8 +450,9 @@ warning 6002: The table/view 'SalesForce.dbo.Tbl_Users' does not have a primary 
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
-                <ScalarProperty Name="Adress" ColumnName="Adress" />
-                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="OrderDelivery" ColumnName="OrderDelivery" />
+                <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -243,16 +465,6 @@ warning 6002: The table/view 'SalesForce.dbo.Tbl_Users' does not have a primary 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Tbl_WorkOrders">
-            <EntityTypeMapping TypeName="SalesForceModel.Tbl_WorkOrders">
-              <MappingFragment StoreEntitySet="Tbl_WorkOrders">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Tbl_Users">
             <EntityTypeMapping TypeName="SalesForceModel.Tbl_Users">
               <MappingFragment StoreEntitySet="Tbl_Users">
@@ -262,6 +474,16 @@ warning 6002: The table/view 'SalesForce.dbo.Tbl_Users' does not have a primary 
                 <ScalarProperty Name="UserType" ColumnName="UserType" />
                 <ScalarProperty Name="ParentID" ColumnName="ParentID" />
                 <ScalarProperty Name="UserImagePath" ColumnName="UserImagePath" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_WorkOrders">
+            <EntityTypeMapping TypeName="SalesForceModel.Tbl_WorkOrders">
+              <MappingFragment StoreEntitySet="Tbl_WorkOrders">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

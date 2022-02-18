@@ -1,0 +1,58 @@
+﻿@model  List<DataAccessLayer.Dto.WorkOrderDto>
+
+@{
+    ViewBag.Title = "WorkOrdersHome";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>WorkOrdersHome</h2>
+<a href="/WorkOrder/NewAssign/" button class="btn btn-success">Yeni Görev</a>
+<br>
+<br>
+<table class="table table-hover">
+    <tr>
+        <th scope="col">Number</th>
+        <th scope="col">ProductName</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Price</th>
+        <th scope="col">Adress</th>
+        <th scope="col">OrderDate</th>
+        <th scope="col">OrderDelivery</th>
+        <th scope="col">OrderStatus</th>
+        <th scope="col">Görev</th>
+        <th scope="col">Delete</th>
+        <th scope="col">Update</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>@item.WorkOrderNumber</td>
+    <td>@item.ProductName</td>
+    <td>@item.Quantity</td>
+    <td>@item.Price</td>
+    <td>@item.Adress</td>
+    <td>@item.OrderDate</td>
+    <td>@item.OrderDelivery</td>
+    <td>@item.OrderStatus</td>
+
+    <td>
+        <a href="/WorkOrder/NewAssign/@item.WorkOrderID/" class="btn btn-success">
+            Görev
+        </a>
+    </td>
+
+    <td>
+        <a href="/WorkOrder/DeleteAssign/@item.WorkOrderID/" class="btn btn-danger">
+            Sil
+        </a>
+    </td>
+    <td>
+        <a href="/WorkOrder/UpdateAssign/@item.WorkOrderID/" class="btn btn-warning">
+            Update
+        </a>
+    </td>
+
+</tr>
+    }
+</table>

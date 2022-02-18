@@ -14,11 +14,20 @@ namespace DataAccessLayer
     
     public partial class Tbl_Users
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Tbl_Users()
+        {
+            this.Tbl_Orders = new HashSet<Tbl_Orders>();
+        }
+    
         public int ID { get; set; }
         public string UserEmail { get; set; }
         public string UserPassword { get; set; }
         public string UserType { get; set; }
         public Nullable<int> ParentID { get; set; }
         public string UserImagePath { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tbl_Orders> Tbl_Orders { get; set; }
     }
 }

@@ -1,0 +1,70 @@
+﻿@model DataAccessLayer.Tbl_Oppurtunity
+@{
+    ViewBag.Title = "NewOppurtunity";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>NewOppurtunity</h2>
+
+
+<body>
+    <div>
+        @using (Html.BeginForm("UpdateOppurtunity", "Oppurtunity", FormMethod.Post))
+        {
+            @Html.TextBoxFor(x => x.ID, new { @class = "form-control" })
+            @Html.Label("Description")
+            @Html.TextBoxFor(x => x.OppurtunityDescription, new { @class = "form-control" })
+            @Html.Label("Entry")
+            @Html.TextBoxFor(x => x.OppurtunityEntery, new { @class = "form-control" })
+            @Html.Label("Start Date")
+            @Html.TextBoxFor(x => x.OppurtunityStartDate, new { @class = "form-control" })
+            @Html.Label("Expired Date")
+            @Html.TextBoxFor(x => x.OppurtunityExpireDate, new { @class = "form-control" })
+            @Html.Label("Customer Adress")
+            @Html.TextBoxFor(x => x.OppurtunityCustomerAdress, new { @class = "form-control" })
+            @Html.Label("Customer Name")
+            @Html.TextBoxFor(x => x.OppurtunityCustomerName, new { @class = "form-control" })
+            @Html.Label("Detail")
+            @Html.TextBoxFor(x => x.OppurtunityDetail, new { @class = "form-control" })
+            @Html.Label("Header")
+            @Html.TextBoxFor(x => x.OppurtunityHeader, new { @class = "form-control" })
+            @Html.Label("Type")
+            @Html.TextBoxFor(x => x.OppurtunityType, new { @class = "form-control" })
+            @Html.Label("CustomerName")
+            @Html.TextBoxFor(x => x.OppurtunityCustomerName, new { @class = "form-control" })
+
+            <br>
+            <button class="btn btn-success id="k" >
+                Güncelle
+            </button>
+        }
+    </div>
+</body>
+
+@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#k").mousedown(function () {
+            swal({
+
+
+                title: "Güncelleme Başarılı",
+                icon: "success",
+                button: "Ok!",
+            });
+        });
+    });
+</script>*@
+
+
+
+
+
+
+
+

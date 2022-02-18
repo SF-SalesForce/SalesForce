@@ -14,8 +14,17 @@ namespace DataAccessLayer
     
     public partial class Tbl_Customers
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Tbl_Customers()
+        {
+            this.Tbl_Orders = new HashSet<Tbl_Orders>();
+        }
+    
         public int ID { get; set; }
         public string CustomerName { get; set; }
         public string Adress { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tbl_Orders> Tbl_Orders { get; set; }
     }
 }

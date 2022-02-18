@@ -1,5 +1,4 @@
-﻿
-using DataAccessLayer;
+﻿using DataAccessLayer.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Abstract
 {
-    public interface IOppurtunityDal : IGenericDal<Tbl_Oppurtunity>
+    public interface IWorkOrdersDal : IGenericDal<Tbl_Orders>
     {
+         List<WorkOrderDto> GetAllDetail();
     }
 }

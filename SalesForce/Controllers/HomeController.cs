@@ -1,4 +1,6 @@
 ﻿using BusinessLayer;
+using BusinessLayer.WorkOrders;
+using DataAccessLayer.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +9,9 @@ using System.Web.Mvc;
 
 namespace SalesForce.Controllers
 {
+ 
     public class HomeController : Controller
     {
-      
 
         public ActionResult Index()
         {
@@ -21,7 +23,7 @@ namespace SalesForce.Controllers
         {
             ViewBag.Message = "Your application description page.";
 
-            UserManagement cs = new UserManagement();
+            UserManager cs = new UserManager(new UserDal());
             cs.checkUser("test", "testc");
 
             return View();

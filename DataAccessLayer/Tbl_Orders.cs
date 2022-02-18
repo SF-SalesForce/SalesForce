@@ -14,10 +14,25 @@ namespace DataAccessLayer
     
     public partial class Tbl_Orders
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Tbl_Orders()
+        {
+            this.Tbl_OrderDetails = new HashSet<Tbl_OrderDetails>();
+            this.Tbl_WorkOrders = new HashSet<Tbl_WorkOrders>();
+        }
+    
         public int ID { get; set; }
         public Nullable<System.DateTime> OrderDate { get; set; }
         public Nullable<int> CustomerID { get; set; }
-        public string Adress { get; set; }
-        public Nullable<int> OrderNumber { get; set; }
+        public Nullable<int> UserID { get; set; }
+        public Nullable<bool> OrderDelivery { get; set; }
+        public Nullable<bool> OrderStatus { get; set; }
+    
+        public virtual Tbl_Customers Tbl_Customers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tbl_OrderDetails> Tbl_OrderDetails { get; set; }
+        public virtual Tbl_Users Tbl_Users { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tbl_WorkOrders> Tbl_WorkOrders { get; set; }
     }
 }

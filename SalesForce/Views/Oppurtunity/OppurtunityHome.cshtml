@@ -1,0 +1,76 @@
+﻿@model          List<DataAccessLayer.Tbl_Oppurtunity>
+     
+@{
+    ViewBag.Title = "OppurtunityIndex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>OppurtunityIndex</h2>
+
+<head>
+    <style>
+        th {
+            text-align:center;
+               margin : 25px;     
+        }
+        
+    </style>
+</head>
+<body>
+    <a href="/Oppurtunity/NewOppurtunity" button class="btn btn-success" >
+        Yeni Fırsat   
+    </a>
+    <br><br>
+    <table class="table-bordered">
+
+        <tr>
+            <th scope="col">ID</th>
+            <th style="text-align:center" scope="col">Type</th>
+            <th scope="col">Header</th>
+            <th scope="col">Detail</th>
+            <th scope="col">CustomerName</th>
+            <th scope="col">CustomerAdress</th>
+            <th scope="col">StartDate</th>
+            <th scope="col">ExpireDate</th>
+            <th scope="col">Entery</th>
+            <th scope="col">Description</th>
+            
+
+
+        </tr>
+
+        @foreach (var item in Model)
+        {
+    <tr>
+
+
+
+        <td>@item.ID </td>
+        <td>@item.OppurtunityType</td>
+        <td>@item.OppurtunityHeader </td>
+        <td>@item.OppurtunityDetail</td>
+        <td>@item.OppurtunityCustomerName </td>
+        <td>@item.OppurtunityCustomerAdress</td>
+        <td>@item.OppurtunityStartDate</td>
+        <td>@item.OppurtunityExpireDate</td>
+        <td>@item.OppurtunityEntery</td>
+        <td>@item.OppurtunityDescription</td>
+        <td>
+            <a href="/Oppurtunity/DeleteOppurtunity/@item.ID/" class="btn btn-danger">
+                Sil
+            </a>
+        </td>
+        <td>
+            <a href="/Oppurtunity/UpdateOppurtunity/@item.ID/" class="btn btn-warning">
+                Update
+            </a>
+        </td>
+
+
+
+    </tr>
+
+        }
+
+    </table>
+</body>

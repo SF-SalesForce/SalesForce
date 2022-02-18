@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "UpdateAssign";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model DataAccessLayer.Dto.WorkOrderDto
+ 
+
+
+<body>
+    <div>
+        @using (Html.BeginForm("UpdateAssign", "WorkOrder", FormMethod.Post))
+        {
+            @Html.TextBoxFor(x => x.WorkOrderID, new { @class = "form-control" })
+            @Html.Label("ProductName")
+            @Html.TextBoxFor(x => x.ProductName, new { @class = "form-control" })
+            @Html.Label("Entry")
+            @Html.TextBoxFor(x => x.Quantity, new { @class = "form-control" })
+            @Html.TextBoxFor(x => x.Price, new { @class = "form-control" })
+            @Html.TextBoxFor(x => x.Adress, new { @class = "form-control" })
+            @Html.TextBoxFor(x => x.OrderDate, new { @class = "form-control" })
+            @Html.TextBoxFor(x => x.OrderDelivery, new { @class = "form-control" })
+            @Html.TextBoxFor(x => x.OrderStatus, new { @class = "form-control" })
+            <br>
+            <button class="btn btn-success id="k">
+                Güncelle
+            </button>
+        }
+    </div>
+</body>

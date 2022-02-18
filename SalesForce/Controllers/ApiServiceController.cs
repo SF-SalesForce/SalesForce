@@ -1,5 +1,6 @@
 ﻿using BusinessLayer;
-using DataAccessLayer.Models;
+using DataAccessLayer;
+using DataAccessLayer.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,10 @@ namespace SalesForce.Controllers
                 
         }
         
-        public ModelUser CheckUserName(string username, string password)
+        public Tbl_Users CheckUserName(string username, string password)
         {
-            UserManagement cs = new UserManagement();
-            ModelUser retVal = cs.checkUser(username, password);
+            UserManager cs = new UserManager(new UserDal());
+            Tbl_Users retVal = cs.checkUser(username, password);
             return retVal;
 
             //return "CheckUserName " + username  + "  " + password;

@@ -14,8 +14,17 @@ namespace DataAccessLayer
     
     public partial class Tbl_Products
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Tbl_Products()
+        {
+            this.Tbl_OrderDetails = new HashSet<Tbl_OrderDetails>();
+        }
+    
         public int ID { get; set; }
         public string ProductName { get; set; }
         public Nullable<decimal> Price { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tbl_OrderDetails> Tbl_OrderDetails { get; set; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using BusinessLayer;
-using DataAccessLayer.Models;
 using DataAccessLayer;
 using DataAccessLayer.Abstract;
 using System;
@@ -21,8 +20,23 @@ namespace BusinessLayer.Oppurtunities
         {
             return _oppurtunityDal.GetAll();
         }
-
-
+        public void AddOppurtunity(Tbl_Oppurtunity Oppurtunity)
+        {
+            _oppurtunityDal.Add(Oppurtunity);
+        }
+        public void UpdateOppurtunity(Tbl_Oppurtunity Oppurtunity)
+        {
+            _oppurtunityDal.Update(Oppurtunity);
+        }
+        public void DeleteOppurtunity(Tbl_Oppurtunity Oppurtunity)
+        {
+            _oppurtunityDal.Delete(Oppurtunity);
+        }
+        public Tbl_Oppurtunity GetByID(int id)
+        {
+            return _oppurtunityDal.GetByID(x => x.ID == id);
+        }
+        #region MyRegion
         //List<ModelOppurtunity> getAllOppurtunity()
         //{
         //    var dbset = db.Tbl_Oppurtunity.ToList();
@@ -49,5 +63,6 @@ namespace BusinessLayer.Oppurtunities
 
 
         //}
+        #endregion
     }
 }

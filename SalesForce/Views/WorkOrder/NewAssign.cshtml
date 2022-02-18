@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "NewAssign";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model DataAccessLayer.Tbl_OrderAssigment
+
+<h2>NewOppurtunity</h2>
+
+
+<body>
+    <div>
+        @using (Html.BeginForm("NewAssign", "WorkOrder", FormMethod.Post))
+        {
+            @Html.Label("Sipariş Numarası")
+            @Html.TextBoxFor(x => x.OrderID, new {@readonly = "readonly", @Value = ViewBag.WorkOrderId, @class = "form-control" })
+            
+            @Html.Label("Kurye")
+            @Html.DropDownListFor(x => x.UserID, (List<SelectListItem>)ViewBag.combobox, new { @class = "form-control" })
+
+
+
+
+            <br>
+            <button class="btn btn-success" id="p">
+                Kaydet
+            </button>
+            }
+        </div>
+</body>
+
+@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#p").mousedown(function () {
+                swal({
+
+
+                    title: "Kayıt Başarılı",
+                    icon: "success",
+                    button: "Ok!",
+                });
+            });
+        });
+    </script>*@
+
+
+
+
+
+
+
+
+
